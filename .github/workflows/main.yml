@@ -24,3 +24,13 @@ jobs:
       - name: Push Docker image to ACR
         run: |
           docker push ${{ secrets.ACR_NAME }}.azurecr.io/myapp:latest
+      - name: Set AKS context
+        uses: azure/aks-set-context@v5
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+
+      - name: Deploy to AKS
+        run: |
+          kubectl apply -f deployment.yml
