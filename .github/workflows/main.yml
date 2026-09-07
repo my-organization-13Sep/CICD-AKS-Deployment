@@ -16,3 +16,11 @@ jobs:
       - name: Login to Azure Container Registry
         run: |
           az acr login --name ${{ secrets.ACR_NAME }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/myapp:latest .
+
+      - name: Push Docker image to ACR
+        run: |
+          docker push ${{ secrets.ACR_NAME }}.azurecr.io/myapp:latest
